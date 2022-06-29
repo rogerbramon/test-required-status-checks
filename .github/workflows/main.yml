@@ -15,7 +15,7 @@ jobs:
         with:
           script: |
             console.log(context)
-            const state = context.eventName === 'labeled'? 'success': 'pending';
+            const state = context.payload.action === 'labeled'? 'success': 'pending';
             const status = {
               owner: context.repo.owner,
               repo: context.repo.repo,
