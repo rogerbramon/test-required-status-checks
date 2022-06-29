@@ -14,7 +14,8 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const state = context.eventName == 'labeled'? 'success': 'pending';
+            console.log(context)
+            const state = context.eventName === 'labeled'? 'success': 'pending';
             const status = {
               owner: context.repo.owner,
               repo: context.repo.repo,
