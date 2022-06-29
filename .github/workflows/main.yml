@@ -20,7 +20,7 @@ jobs:
                 repo: context.repo.repo,
                 sha: context.sha,
                 state: 'success',
-                context: 'Signature status',
+                context: 'Signature check',
                 target_url: `https://github.com/${context.repo.repo}/actions/runs/${context.runId}`
               }
               console.log('label found')
@@ -32,8 +32,8 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 sha: context.sha,
-                state: 'success',
-                context: 'Signature status',
+                state: 'pending',
+                context: 'Signature check',
                 target_url: `https://github.com/${context.repo.repo}/actions/runs/${context.runId}`
               }
               console.log('label missing')
