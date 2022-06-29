@@ -14,22 +14,27 @@ jobs:
         with:
           script: |
             if (context.payload.pull_request.labels.some(label => label.name === 'no signature required' || label.name === 'signed')) {
-              github.rest.repos.createCommitStatus({
+              const status = {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 sha: context.sha,
                 state: 'success',
                 context: 'Signature status',
                 target_url: `https://github.com/${context.repo.repo}/actions/runs/${context.runId}`
-              });
+              }
+              console.log('label found')
+              console.log(status)
+              github.rest.repos.createCommitStatus(status);
             } else {
-            
-              github.rest.repos.createCommitStatus({
+              const status = {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 sha: context.sha,
                 state: 'pending',
                 context: 'Signature status',
                 target_url: `https://github.com/${context.repo.repo}/actions/runs/${context.runId}`
-              });
+              }
+              console.log('label missing')
+              console.log(status)
+              github.rest.repos.createCommitStatus(status);
             }
