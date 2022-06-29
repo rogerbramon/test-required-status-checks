@@ -14,6 +14,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            
             const status = {
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -22,4 +23,5 @@ jobs:
               context: 'Signature check',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             }
+            console.log(status)
             await github.rest.repos.createCommitStatus(status);
