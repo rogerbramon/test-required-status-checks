@@ -12,6 +12,7 @@ jobs:
       - name: Check signature labels
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.UA_TOKEN }}
           script: |
             if (context.payload.pull_request.labels.some(label => label.name === 'no signature required' || label.name === 'signed')) {
               const status = {
