@@ -1,45 +1,25 @@
 name: Check signature requirements
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [ "master" ]
     types: [opened, synchronize, reopened, labeled, unlabeled]
 
 jobs:
   check-signature-labels:
+    if: contains(github.event.pull_request.labels.*.name, 'signed') || contains(github.event.pull_request.labels.*.name, 'no signature required')
     runs-on: ubuntu-latest
     steps:
       - name: Check signature labels
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.UA_TOKEN }}
           script: |
-            if (context.payload.pull_request.labels.some(label => label.name === 'no signature required' || label.name === 'signed')) {
-              const status = {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                sha: context.sha,
-                state: 'success',
-                context: 'Signature check',
-                description: 'Check whether the PR is signed',
-                target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-              }
-              console.log('label found')
-              console.log(status)
-              const response = await github.rest.repos.createCommitStatus(status);
-              console.log(response)
-            } else {
-              const status = {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                sha: context.sha,
-                state: 'error',
-                context: 'Signature check',
-                description: 'Check whether the PR is signed',
-                target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-              }
-              console.log('label missing')
-              console.log(status)
-              const response = await github.rest.repos.createCommitStatus(status);
-              console.log(response)
+            const status = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: 'success',
+              context: 'Signature check',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             }
+            await github.rest.repos.createCommitStatus(status);
