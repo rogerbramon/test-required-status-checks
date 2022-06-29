@@ -1,0 +1,20 @@
+name: Check signature requirements
+
+on:
+  pull_request:
+    branches: [ "master" ]
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+jobs:
+  check-signature-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check signature labels
+        uses: actions/github-script@v6
+        with:
+          script: |
+            if (context.payload.pull_request.labels.some(label => label.name === 'no signature required' || label.name === 'signed')) {
+              return
+            }
+            
+            throw new Error('This PR must have either the "no signature required" or "signed" label')
