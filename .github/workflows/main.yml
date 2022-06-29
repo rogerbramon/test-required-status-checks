@@ -33,7 +33,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 sha: context.sha,
-                state: 'pending',
+                state: 'error',
                 context: 'Signature check',
                 description: 'Check whether the PR is signed',
                 target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
