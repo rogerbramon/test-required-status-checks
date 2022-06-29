@@ -3,18 +3,18 @@ name: Check signature requirements
 on:
   pull_request_target:
     branches: [ "master" ]
-    types: [opened, synchronize, reopened, labeled, unlabeled]
+    types: [labeled, unlabeled]
 
 jobs:
   check-signature-labels:
-    if: contains(github.event.pull_request.labels.*.name, 'signed') || contains(github.event.pull_request.labels.*.name, 'no signature required')
+    if: github.event.label.name == 'signed' || github.event.labe.name == 'no signature required'
     runs-on: ubuntu-latest
     steps:
       - name: Check signature labels
         uses: actions/github-script@v6
         with:
           script: |
-            
+            const state = context.eventName == 'labeled'? 'success': 'pending';
             const status = {
               owner: context.repo.owner,
               repo: context.repo.repo,
