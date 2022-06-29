@@ -25,7 +25,8 @@ jobs:
               }
               console.log('label found')
               console.log(status)
-              github.rest.repos.createCommitStatus(status);
+              const response = await github.rest.repos.createCommitStatus(status);
+              console.log(response)
             } else {
               const status = {
                 owner: context.repo.owner,
@@ -37,5 +38,6 @@ jobs:
               }
               console.log('label missing')
               console.log(status)
-              github.rest.repos.createCommitStatus(status);
+              const response = await github.rest.repos.createCommitStatus(status);
+              console.log(response)
             }
